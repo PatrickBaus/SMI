@@ -29,7 +29,7 @@ if (!$result) {
 }
 
 echo <<<EOF
-	<script src="includes/edit_units.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/edit_units.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		function AddAllJEditables() {
 			addJEditable("edit");

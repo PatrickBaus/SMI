@@ -64,7 +64,7 @@ $callback_period = getDefaultCallbackPeriod($con, $database);
 
 echo <<<EOF
 	<script type="text/javascript" charset="utf-8">var default_callback_period={$callback_period};</script>
-	<script src="includes/edit_sensors.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/edit_sensors.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		function AddAllJEditables() {
 			addJEditableSelect("edit_select_units", $units_json);

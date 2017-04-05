@@ -67,9 +67,9 @@ $firstDate = $row['date'];
 $result->close();
 
 echo <<<EOF
-	<script type="text/javascript" src="includes/jquery.simple-dtpicker.js"></script>
-	<link type="text/css" href="includes/jquery.simple-dtpicker.css" rel="stylesheet" />
-	<script type="text/javascript" src="includes/export.js"></script>
+	<script type="text/javascript" src="static/js/jquery.simple-dtpicker.js"></script>
+	<link type="text/css" href="static/css/jquery.simple-dtpicker.css" rel="stylesheet" />
+	<script type="text/javascript" src="static/js/export.js"></script>
 	<div class="main">
 		<h1>Export Sensor Data</h1>
 		<div id="message_export"></div>

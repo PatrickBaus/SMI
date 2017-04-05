@@ -33,7 +33,7 @@ $default_port = getDefaultDaemonPort($con, $database);
 
 echo <<<EOF
 	<script type="text/javascript" charset="utf-8">var default_port={$default_port};</script>
-	<script src="includes/edit_nodes.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/edit_nodes.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		function AddAllJEditables() {
 			addJEditable("edit");

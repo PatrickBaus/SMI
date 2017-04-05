@@ -89,19 +89,19 @@ Buttons by Koob, http://itweek.deviantart.com/art/Knob-Buttons-Toolbar-icons-734
 {
 	color: #4F8A10;
 	background-color: #DFF2BF;
-	background-image:url('img/success.png')
+	background-image:url('static/img/success.png')
 }
 
 .errorBox {
 	color: #D8000C;
 	background-color: #FFBABA;
-	background-image: url('img/error.png');
+	background-image: url('static/img/error.png');
 }
 
 .validationBox {
 	color: #D63301;
 	background-color: #FFCCBA;
-	background-image: url('img/error.png');
+	background-image: url('static/img/error.png');
 }
 
 .editableCell {
@@ -278,7 +278,7 @@ tr:last-child td:last-child {
 	display: inline-block;
 	width: 100%;
 	padding: 0px 0px 5px;
-	background: #E5E5E5 url(img/arrow-up.gif) no-repeat right 5px center;
+	background: #E5E5E5 url(static/img/arrow-up.gif) no-repeat right 5px center;
 }
 
 .sensorPanelContent
@@ -346,7 +346,7 @@ tr:last-child td:last-child {
 
 .sensorPanelCollapsed .sensorPanelHeader
 {
-	background: #E5E5E5 url(img/arrow-down.gif) no-repeat right 5px center;
+	background: #E5E5E5 url(static/img/arrow-down.gif) no-repeat right 5px center;
 }
 
 .sensorPanelCollapsed .sensorPanelContent

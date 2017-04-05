@@ -6,9 +6,9 @@
 	<title>SMI: Sensor Management Interface</title>
 	<meta http-equiv="description" content="page description" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="smi.css" media="screen" />
-	<script src="includes/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="includes/jquery.jeditable.mini.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="static/css/smi.css" media="screen" />
+	<script src="static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/jquery.jeditable.mini.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body>
