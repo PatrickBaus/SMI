@@ -184,11 +184,11 @@ th {
 	border-right:none;
 }
 
-.tableCell.enabled {
+.tableCell .enabled {
 	color: #4F8A10;
 }
 
-.tableCell.disabled {
+.tableCell .disabled {
 	color: #D8000C;
 }
 
