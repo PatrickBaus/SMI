@@ -278,7 +278,7 @@ tr:last-child td:last-child {
 	display: inline-block;
 	width: 100%;
 	padding: 0px 0px 5px;
-	background: #E5E5E5 url(static/img/arrow-up.gif) no-repeat right 5px center;
+	background: #E5E5E5 url(../img/arrow-up.gif) no-repeat right 5px center;
 }
 
 .sensorPanelContent
@@ -346,7 +346,7 @@ tr:last-child td:last-child {
 
 .sensorPanelCollapsed .sensorPanelHeader
 {
-	background: #E5E5E5 url(static/img/arrow-down.gif) no-repeat right 5px center;
+	background: #E5E5E5 url(../img/arrow-down.gif) no-repeat right 5px center;
 }
 
 .sensorPanelCollapsed .sensorPanelContent
