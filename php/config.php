@@ -1,7 +1,7 @@
 <?php
 // Connection parameters
 $database_host = "localhost";
-// $database_port = 3306;  // optional
+$database_port = 3306;  // optional
 $database = "sensors";
 $username = "smi_admin";
 $password = "******";
