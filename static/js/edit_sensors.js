@@ -127,7 +127,7 @@ function createTableRow(id, name, uid, unit, callback_period, room, master_node,
 	html = html + sprintf(tableRow, id, room);
 	tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit_select_nodes editableCell" id="type=nodes&sensor_id=%s">%s</div></div>' + "\n";
 	html = html + sprintf(tableRow, id, master_node);
-	tableRow = "\t\t\t" + ' <div class="tableCell %s"><div class="edit_select_enabled editableCell" id="type=nodes&sensor_id=%s">%s</div></div>' + "\n";
+	tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit_select_enabled editableCell %s" id="type=enabled&sensor_id=%s">%s</div></div>' + "\n";
 	if (enabled == true) {
 		html = html + sprintf(tableRow, "enabled", id, "enabled");
 	} else {
