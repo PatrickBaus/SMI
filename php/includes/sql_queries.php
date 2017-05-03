@@ -1,8 +1,8 @@
 <?php
 // Auxiliary tables
-$query_get_units = 'SELECT id, CONCAT(type, " [", unit, "]") AS unit FROM sensor_units';
-$query_get_nodes = "SELECT id, hostname FROM sensor_nodes";
-$query_get_rooms = "SELECT id, comment AS room FROM floorplan_rooms";
+$query_get_units = 'SELECT id, CONCAT(type, " [", unit, "]") AS unit FROM sensor_units ORDER BY unit';
+$query_get_nodes = "SELECT id, hostname FROM sensor_nodes ORDER BY hostname";
+$query_get_rooms = "SELECT id, comment AS room FROM floorplan_rooms ORDER BY room";
 
 // Get last auto increment id inserted
 $query_get_last_id = "SELECT LAST_INSERT_ID() AS id";
