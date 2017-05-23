@@ -2,6 +2,8 @@
 <?php require_once("../includes/sql_queries.php");?>
 <?php require_once("../includes/constants.php");?>
 <?php
+// Increase the memory limit, because huge queries need more
+ini_set('memory_limit', '8G');
 
 //Constants
 $filter_regex_date = "/^20\d\d[- \/.](0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0123]):([0-5][0-9])$/";
