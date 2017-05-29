@@ -96,12 +96,12 @@ $outputType = $_POST["outputType"];
 $sensors = json_decode($_POST["sensors"]);
 
 if (!preg_match($filter_regex_date, $startDate)) {
-	printf('Invalid start date "%s"',  $startDate);
+	printf('Invalid start date "%s"',  $startDate->format('Y-m-d H:i:s'));
 	exit();
 }
 
 if (!preg_match($filter_regex_date, $endDate)) {
-	printf('Invalid end date "%s"',  $endDate);
+	printf('Invalid end date "%s"',  $endDate->format('Y-m-d H:i:s'));
 	exit();
 }
 
@@ -152,7 +152,7 @@ $data = getData($con, $query_export["get_sensor_info"], $query_export["get_data"
 closeConnection($con);
 
 if (empty($data["data"])) {
-	printf('No data found between %s and %s.', $startDate, $endDate);
+	printf('No data found between %s and %s.', $startDate->format('Y-m-d H:i:s'), $endDate->format('Y-m-d H:i:s'));
 	exit();
 }
 
