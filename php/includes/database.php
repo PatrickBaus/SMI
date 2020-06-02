@@ -24,7 +24,7 @@ function openConnection($timezone = null) {
 
     return $con;
   } catch (PDOException $e) {
-    printf("Connect failed: (%d) %s" . PHP_EOL, $con->connect_errno, $con->connect_error);
+    printf("Connect failed: %s" . PHP_EOL, $e->getMessage());
     exit();
   }
 }
