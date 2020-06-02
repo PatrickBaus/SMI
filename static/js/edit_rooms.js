@@ -1,3 +1,22 @@
+function addJEditableSelect(selectClass, selectData, callback_function) {
+	$('.' + selectClass).editable('database/save_rooms.php', {
+		indicator: '<img src="img/indicator.gif">',
+		tooltip:'Click to edit...',
+		data: selectData,
+		type: "select",
+		callback: window[callback_function],
+		submit: "OK",
+	});
+}
+
+function addJEditable(className) {
+	$('.' + className).editable('database/save_rooms.php', {
+		indicator: '<img src="img/indicator.gif">',
+		tooltip:'Click to edit...',
+		cssclass : "inherit"
+	});
+}
+
 function deleteBtnClickFunction() {
 	var row = $(this).parents('.tableRow');
 	var room_id =  $(this).attr('id').split('=')[1];
@@ -50,7 +69,7 @@ function addBtnClickFunction() {
 				$('#message_add').html("Successfully added new room with id " + id)
 				.removeClass()
 				.addClass("successBox");
-				$('#roomsTable').append(createTableRow(id, name);
+				$('#roomsTable').append(createTableRow(id, name));
 				AddAllJEditables();
 				$('.deleteButton').click(deleteBtnClickFunction);
 			} else {
