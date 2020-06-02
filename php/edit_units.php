@@ -3,12 +3,10 @@
 <?php require_once("includes/database.php");?>
 <?php
 // Functions
-function createTableRow($id, $type, $unit) {
+function createTableRow($id, $unit) {
 	$filler = "\t\t\t";
 
 	$html = $filler . '<div class="tableRow">' . PHP_EOL;
-	$tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=type&unit_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $type);
 	$tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=unit&unit_id=%d">%s</div></div>' . PHP_EOL;
 	$html .= sprintf($tableRow, $id, $unit);
 	$tableRow = $filler . "\t" . ' <div class="tableCell"><button id="unit_id=%d" class="button deleteButton">Delete</button></div>' . PHP_EOL;
@@ -43,7 +41,6 @@ echo <<<EOF
 		<div id="message_add"></div>
 		<div class="table">
 			<div class="tableRow">
-				<div class="tableCell"><input type="text" id="add_type" placeholder="Unit type" class="input_add"></div>
 				<div class="tableCell"><input type="text" id="add_unit" placeholder="Unit" class="input_add"></div>
 				<div class="tableCell">
 					<button id="add_button" class="button addButton">Add</button>
@@ -55,7 +52,6 @@ echo <<<EOF
 		<div id="message_edit"></div>
 		<div id="unitsTable" class="table">
 			<div class="tableRow">
-				<div class="tableHeader">Type</div>
 				<div class="tableHeader">Unit</div>
 				<div class="tableHeader"></div>
 			</div>
@@ -63,7 +59,7 @@ echo <<<EOF
 EOF;
 
 while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-	echo createTableRow($row['id'], $row['type'], $row['unit']);
+	echo createTableRow($row['id'], $row['unit']);
 }
 $result->close();
 

@@ -128,7 +128,7 @@ if (!$result) {
 }
 
 while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-	$rooms[$row['room_name']][$row['id']] = $row['name'];
+	$rooms[$row['room_name']][$row['id']] = $row['label'];
 }
 $result->close();
 

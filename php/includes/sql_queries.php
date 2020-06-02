@@ -1,16 +1,16 @@
 <?php
 // Auxiliary tables
-$query_get_units = 'SELECT id, CONCAT(type, " [", unit, "]") AS unit FROM sensor_units ORDER BY unit';
+$query_get_units = 'SELECT id, unit FROM sensor_units ORDER BY unit';
 $query_get_nodes = "SELECT id, hostname FROM sensor_nodes ORDER BY hostname";
-$query_get_rooms = "SELECT id, comment AS room FROM floorplan_rooms ORDER BY room";
+$query_get_rooms = "SELECT id, label AS room FROM rooms ORDER BY room";
 
 // Get last auto increment id inserted
 $query_get_last_id = "SELECT LAST_INSERT_ID() AS id";
 
 // Overview
 $query_overview = array(
-	"get_all" => 'SELECT S.id, S.name, S.sensor_uid AS uid, SU.type, SU.unit, S.callback_period, SR.comment as room, SN.hostname AS master_node FROM sensors S, sensor_units SU, sensor_nodes SN, floorplan_rooms SR WHERE S.enabled=1 AND SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = SR.id ORDER BY room, type, master_node',
-	"get_latest_value" => 'SELECT SD.date as last_update, SD.value as last_value FROM sensor_data SD WHERE SD.sensor_id=(?) ORDER BY date DESC LIMIT 1',
+	"get_all" => 'SELECT S.id, S.label, S.sensor_uid AS uid, SU.unit, S.callback_period, SR.label as room, SN.hostname AS master_node FROM sensors S, sensor_units SU, sensor_nodes SN, rooms SR WHERE S.enabled AND SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = SR.id ORDER BY room, unit, master_node',
+	"get_latest_value" => 'SELECT SD.time as last_update, SD.value as last_value FROM sensor_data SD WHERE SD.sensor_id=(?) ORDER BY time DESC LIMIT 1',
 );
 // Get default callback period
 $query_get_callback_default = 'SELECT COLUMN_DEFAULT FROM INFORMATION_SCHEMA.columns WHERE TABLE_SCHEMA=(?) AND TABLE_NAME="sensors" AND COLUMN_NAME="callback_period"';
@@ -50,17 +50,17 @@ $query_room = array(
 // Sensors
 $query_sensor = array(
 	"add" => "INSERT INTO sensors (id, sensor_uid, name, unit_id, node_id, room_id, callback_period) VALUES (NULL, (?), (?), (?), (?), (?), (?))",
-	"get_all" => "SELECT S.id, S.name, S.sensor_uid AS uid, SU.type, S.unit_id, S.callback_period, SR.comment AS room, SN.hostname AS master_node, S.enabled FROM sensors S, sensor_units SU, sensor_nodes SN, floorplan_rooms SR WHERE SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = SR.id ORDER BY enabled DESC, room, type, master_node",
-	"get_name" => "SELECT name FROM sensors WHERE id=(?)",
+	"get_all" => "SELECT S.id, S.label, S.sensor_uid AS uid, S.unit_id, S.callback_period, SR.label AS room, SN.hostname AS master_node, S.enabled FROM sensors S, sensor_units SU, sensor_nodes SN, rooms SR WHERE SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = SR.id ORDER BY enabled DESC, room, unit, master_node",
+	"get_name" => "SELECT label FROM sensors WHERE id=(?)",
 	"get_callback" => "SELECT callback_period FROM sensors WHERE id=(?)",
 	"get_node" => "SELECT SN.hostname FROM sensors S, sensor_nodes SN WHERE S.node_id = SN.id AND S.id=(?)",
-	"get_room" => "SELECT SR.comment FROM sensors S, floorplan_rooms SR WHERE S.room_id = SR.id AND S.id=(?)",
+	"get_room" => "SELECT R.label FROM sensors S, rooms R WHERE S.room_id = R.id AND S.id=(?)",
 	"get_uid" => "SELECT S.sensor_uid FROM sensors S WHERE S.id=(?)",
-	"get_enabled" => "SELECT S.enabled FROM sensors S WHERE S.id=(?)",
-	"get_unit" => 'SELECT CONCAT(SU.type, " ", "[", SU.unit, "]")  FROM sensors S, sensor_units SU WHERE S.unit_id = SU.id AND S.id=(?)',
+	"get_enabled" => "SELECT enabled FROM sensors WHERE id=(?)",
+	"get_unit" => 'SELECT SU.unit FROM sensors S, sensor_units SU WHERE S.unit_id = SU.id AND S.id=(?)',
 	"delete" => "DELETE FROM sensors WHERE id=(?)",
 	"update_callback" => "UPDATE sensors SET callback_period=(?) WHERE id=(?)",
-	"update_name" => "UPDATE sensors SET name=(?) WHERE id=(?)",
+	"update_name" => "UPDATE sensors SET label=(?) WHERE id=(?)",
 	"update_room" => "UPDATE sensors SET room_id=(?) WHERE id=(?)",
 	"update_node" => "UPDATE sensors SET node_id=(?) WHERE id=(?)",
 	"update_uid" => "UPDATE sensors SET sensor_uid=(?) WHERE id=(?)",
@@ -70,20 +70,18 @@ $query_sensor = array(
 
 // Units
 $query_unit = array(
-	"add" => "INSERT INTO sensor_units (id, type, unit) VALUES (NULL, (?), (?))",
+	"add" => "INSERT INTO sensor_units (id, unit) VALUES (NULL, (?))",
 	"get_all" => "SELECT SU.id, SU.type, SU.unit FROM sensor_units SU ORDER BY type, unit",
-	"get_type" => "SELECT type FROM sensor_units WHERE id=(?)",
 	"get_unit" => "SELECT unit FROM sensor_units WHERE id=(?)",
 	"delete" => "DELETE FROM sensor_units WHERE id=(?)",
-	"update_type" => "UPDATE sensor_units SET type=(?) WHERE id=(?)",
 	"update_unit" => "UPDATE sensor_units SET unit=(?) WHERE id=(?)",
 );
 
 // Export
 $query_export = array(
-	"get_all" => "SELECT S.id, S.name, SR.comment AS room_name FROM sensors S, floorplan_rooms SR WHERE S.room_id = SR.id",
-	"get_first_date" => "SELECT MIN(SD.date) as date from sensor_data SD",
-	"get_data" => 'SELECT SD.sensor_id, SD.date, SD.value, SU.unit FROM sensor_data SD, sensors S, sensor_units SU WHERE date >= ? AND date <= ? AND sensor_id IN (%s) AND S.id=SD.sensor_id AND SU.id=S.unit_id ORDER BY date',
-	"get_sensor_info" => "SELECT S.id, S.name, SR.comment as room FROM sensors S, floorplan_rooms SR WHERE S.id IN (%s) AND S.room_id = SR.id ORDER BY room",
+	"get_all" => "SELECT S.id, S.label, R.label AS room_name FROM sensors S, rooms R WHERE S.room_id = R.id",
+	"get_first_date" => "SELECT MIN(SD.time) as date from sensor_data SD",
+	"get_data" => 'SELECT SD.sensor_id, SD.time, SD.value, SU.unit FROM sensor_data SD, sensors S, sensor_units SU WHERE time >= ? AND time <= ? AND sensor_id IN (%s) AND S.id=SD.sensor_id AND SU.id=S.unit_id ORDER BY date',
+	"get_sensor_info" => "SELECT S.id, S.label, R.label as room FROM sensors S, rooms R WHERE S.id IN (%s) AND S.room_id = R.id ORDER BY room",
 );
 ?>

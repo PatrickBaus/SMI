@@ -142,7 +142,7 @@ echo <<<EOF
 EOF;
 
 while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-	echo createTableRow($row['id'], $row['name'], $row['uid'], $units[$row['unit_id']], $row['callback_period'], $row['room'], $row['master_node'], $row['enabled']);
+	echo createTableRow($row['id'], $row['label'], $row['uid'], $units[$row['unit_id']], $row['callback_period'], $row['room'], $row['master_node'], $row['enabled']);
 }
 $result->close();
 

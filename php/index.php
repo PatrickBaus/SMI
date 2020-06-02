@@ -74,7 +74,7 @@ echo <<<EOF
 		<div class="tableRow">
 			<div class="tableHeader">Name</div>
 			<div class="tableHeader">Uid</div>
-			<div class="tableHeader">Type and Unit</div>
+			<div class="tableHeader">Unit</div>
 			<div class="tableHeader">Measurement Intervall [ms]</div>
 			<div class="tableHeader">Room</div>
 			<div class="tableHeader">Master Node</div>
@@ -87,7 +87,7 @@ foreach($sensors as $sensor) {
 	$last_update = new DateTime($sensor['last_update']);
 	$last_update->setTimeZone(new DateTimeZone(date_default_timezone_get()));
 
-	echo createTableRow($sensor['name'], $sensor['uid'], $sensor['type'] . " [" . $sensor['unit'] . "]", $sensor['callback_period'], $sensor['room'], $sensor['master_node'], $last_update->format('H:i:s d-M-Y T'), $sensor['last_value']. " " . $sensor['unit']);
+	echo createTableRow($sensor['name'], $sensor['uid'], $sensor['unit'], $sensor['callback_period'], $sensor['room'], $sensor['master_node'], $last_update->format('H:i:s d-M-Y T'), $sensor['last_value']. " " . $sensor['unit']);
 }
 echo "</div>" . PHP_EOL;
 

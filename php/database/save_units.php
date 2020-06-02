@@ -2,7 +2,7 @@
 <?php require_once("../includes/sql_queries.php");?>
 <?php
 //Constants
-$filter_regex_id = "/^type=(delete|type|unit)&unit_id=(\d+)/";
+$filter_regex_id = "/^type=(delete|unit)&unit_id=(\d+)/";
 
 //Functions
 function deleteUnit($mysqlCon, $query_delete, $unit_id) {
@@ -28,8 +28,7 @@ function updateUnit($mysqlCon, $query_update, $query_get, $unitId, $update) {
 		printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $mysqlCon->errno, $mysqlCon->error);
 		exit();
 	};
-	$param_type = "si";
-	if (!$stmt->bind_param($param_type, $update, $unitId)) {
+	if (!$stmt->bind_param("si", $update, $unitId)) {
 		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_update, $stmt->errno, $stmt->error);
 		exit();
 	}
@@ -84,14 +83,6 @@ switch ($command) {
 			echo "Invalid unit";
 		} else {
 			echo "0";
-		}
-		break;
-	case "type":
-		// using prepared statements, so no more checking required
-		if (isset($update_value)) {
-			echo updateUnit($con, $query_unit["update_type"], $query_unit["get_type"], $unit_id, $update_value);
-		} else {
-			echo "Invalid type.";
 		}
 		break;
 	case "unit":

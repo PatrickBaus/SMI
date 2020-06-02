@@ -2,14 +2,14 @@
 <?php include("../includes/sql_queries.php");?>
 <?php
 //Functions
-function addunit($mysqlCon, $query, $type, $unit) {
+function addunit($mysqlCon, $query, $unit) {
 	global $query_get_last_id;
 
 	if (!($stmt = $mysqlCon->prepare($query))) {
 		printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
 		exit();
 	}
-	if (!$stmt->bind_param("ss", $type, $unit)) {
+	if (!$stmt->bind_param("s", $unit)) {
 		printf('Binding parameters failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
 		exit();
 	}
@@ -34,19 +34,18 @@ function addunit($mysqlCon, $query, $type, $unit) {
 	return ($success ? "0&id=" . $id : 1);
 }
 
-if (! (isset($_POST["type"]) && isset($_POST["unit"]))) {
+if (! isset($_POST["unit"])) {
 	echo "Invalid arguments.";
         exit();
 }
 
-$type = $_POST["type"];
 $unit = $_POST["unit"];
 
 // Open MySQL connection
 $con = openConnection();
 
 // using prepared statements, so no more checking required
-echo addUnit($con, $query_unit["add"], $type, $unit);
+echo addUnit($con, $query_unit["add"], $unit);
 
 // Close the database connection
 closeConnection($con);

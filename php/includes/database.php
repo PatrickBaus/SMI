@@ -1,33 +1,35 @@
 <?php require_once( dirname(__FILE__) . "/../config.php");?>
 <?php
-// Open MySQL connection
+// Open Postgres connection
 function openConnection($timezone = null) {
-	global $database_host, $username, $password, $database, $database_port;
-	$con = new mysqli($database_host, $username, $password, $database, $database_port);
-	if ($con->connect_errno) {
-		printf("Connect failed: (%d) %s" . PHP_EOL, $con->connect_errno, $con->connect_error);
-		exit();
-	}
+  try {
+    global $database_host, $username, $password, $database, $database_port;
+    $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s;charset=utf8", 
+      $database_host, 
+      $database_port, 
+      $database, 
+      $username, 
+      $password
+    );
+  	$con = new PDO($conStr);
 
-	// Change character set to utf8
-	if (!$con->set_charset("utf8")) {
-		printf('Error loading character set "utf8": %s' . PHP_EOL, $con->error);
-		exit();
-	}
+    // Set the timezone for this connection
+    $stmt = $con->prepare('SET time_zone = ?');
+    if ($timezone === null) {
+      $stmt->bind_param('s', date_default_timezone_get());
+    } else {
+  	  $stmt->bind_param('s', $timezone);
+    }
+    $stmt->execute();
 
-	// Set the timezone for this connection
-	$stmt = $con->prepare('SET time_zone = ?');
-	if ($timezone === null) {
-		$stmt->bind_param('s', date_default_timezone_get());
-	} else {
-		$stmt->bind_param('s', $timezone);
-	}
-	$stmt->execute();
-
-	return $con;
+    return $con;
+  } catch (PDOException $e) {
+    printf("Connect failed: (%d) %s" . PHP_EOL, $con->connect_errno, $con->connect_error);
+    exit();
+  }
 }
 
-function closeConnection($con) {
-	mysqli_close($con);
+function closeConnection(&$con) {
+  $con = NULL;
 }
 ?>
