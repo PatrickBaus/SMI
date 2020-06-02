@@ -4,7 +4,7 @@
 function openConnection($timezone = null) {
   try {
     global $database_host, $username, $password, $database, $database_port;
-    $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s;charset=utf8", 
+    $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;options=\'--client_encoding=UTF8\';user=%s;password=%s", 
       $database_host, 
       $database_port, 
       $database, 
