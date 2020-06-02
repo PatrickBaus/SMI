@@ -10,7 +10,7 @@ function deleteRoom($con, $query_delete, $roomId) {
     printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $con->errno, $con->error);
     exit();
   }
-  $stmt->bindParam(1, $room_id, PDO::PARAM_INT);
+  $stmt->bindParam(1, $roomId, PDO::PARAM_INT);
   if (!$stmt->execute()) {
     printf('Execute failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
     exit();
@@ -18,7 +18,7 @@ function deleteRoom($con, $query_delete, $roomId) {
   return ($stmt->rowCount() > 0);
 }
 
-function updateRoom($con, $query_update, $query_get, $roomId, $update) {
+function updateRoom($con, $query_update, $roomId, $update) {
   if (!($stmt = $con->prepare($query_update))) {
     printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $con->errno, $con->error);
     exit();
@@ -32,20 +32,6 @@ function updateRoom($con, $query_update, $query_get, $roomId, $update) {
   }
 
   // Get the new value
-  if (!($stmt = $con->prepare($query_get))) {
-    printf('Prepare failed for query "%s": (%d) %s\n', $query_get, $con->errno, $con->error);
-    exit();
-  };
-  $stmt->bindParam(1, $roomId, PDO::PARAM_INT);
-  if (!$stmt->execute()) {
-    printf('Execute failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
-    exit();
-  }
-  $value = NULL;
-  if (!$stmt->execute()) {
-    printf('Binding output parameters failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
-  }
-
   return $stmt->fetchColumn();
 }
 
@@ -67,7 +53,7 @@ $con = openConnection();
 // When adding to this switch command do not forget to add the new cases to $filter_regex
 switch ($command) {
   case "delete":
-    if (deleteRoom($con, $query_room["delete"], $roomId) != 0) {
+    if (!deleteRoom($con, $query_room["delete"], $roomId)) {
       echo "Invalid room.";
     } else {
       echo "0";
@@ -76,7 +62,7 @@ switch ($command) {
   case "name":
     // using prepared statements, so no more checking required
     if (isset($update_value)) {
-      echo updateRoom($con, $query_room["update_name"], $query_room["get_name"], $roomId, $update_value);
+      echo updateRoom($con, $query_room["update_name"], $roomId, $update_value);
     } else {
       echo "Invalid name.";
     }

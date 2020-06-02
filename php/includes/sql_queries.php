@@ -30,11 +30,10 @@ $query_node = array(
 
 // Rooms
 $query_room = array(
-	"add" => 'INSERT INTO rooms (label) VALUES ((?))',
-	"get_all" => 'SELECT id, label AS name FROM rooms ORDER BY name',
+	"add" => "INSERT INTO rooms (label) VALUES ((?)) RETURNING id",
+	"get_all" => "SELECT id, label AS name FROM rooms ORDER BY name",
 	"delete" => "DELETE FROM rooms WHERE id=(?)",
-	"get_name" => "SELECT label AS name from rooms WHERE id=(?)",
-	"update_name" => "UPDATE rooms SET label=(?) WHERE id=(?)",
+	"update_name" => "UPDATE rooms SET label=(?) WHERE id=(?) RETURNING label",
 );
 
 // Sensors
@@ -62,9 +61,8 @@ $query_sensor = array(
 $query_unit = array(
   "add" => "INSERT INTO sensor_units (unit) VALUES ((?)) RETURNING id",
 	"get_all" => "SELECT SU.id, SU.unit FROM sensor_units SU ORDER BY unit",
-	"get_unit" => "SELECT unit FROM sensor_units WHERE id=(?)",
 	"delete" => "DELETE FROM sensor_units WHERE id=(?)",
-	"update_unit" => "UPDATE sensor_units SET unit=(?) WHERE id=(?)",
+	"update_unit" => "UPDATE sensor_units SET unit=(?) WHERE id=(?) RETURNING unit",
 );
 
 // Export
