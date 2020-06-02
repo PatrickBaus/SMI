@@ -13,7 +13,6 @@ $query_overview = array(
 	"get_latest_value" => 'SELECT SD.time as last_update, SD.value as last_value FROM sensor_data SD WHERE SD.sensor_id=(?) ORDER BY time DESC LIMIT 1',
 );
 // Get default callback period
-SELECT * FROM INFORMATION_SCHEMA.columns WHERE table_name='sensors' AND column_name='callback_period';
 $query_get_callback_default = "SELECT column_default FROM INFORMATION_SCHEMA.columns WHERE table_name='sensors' AND column_name='callback_period'";
 // Get the default port number used by the sensor daemons
 $query_get_port_default = 'SELECT COLUMN_DEFAULT FROM INFORMATION_SCHEMA.columns WHERE TABLE_SCHEMA=(?) AND TABLE_NAME="sensor_nodes" AND COLUMN_NAME="port"';

@@ -8,14 +8,6 @@ function addJEditable(className) {
 }
 
 function addBtnClickFunction() {
-	var type = $('input#add_type').val();
-	if (type == "") {
-		$('#message_add').html("Please enter a type")
-		.removeClass()
-		.addClass("validationBox");
-		$('input#add_type').focus();
-		return false;
-	}
 	var unit = $('input#add_unit').val();
 	if (unit == "") {
 		$('#message_add').html("Please enter a unit")
@@ -25,7 +17,7 @@ function addBtnClickFunction() {
 		return false;
 	}
 
-	var dataString = "type=" + type + "&unit=" + unit;
+	var dataString = "unit=" + unit;
 	$('#add_button').hide();
 	$('#add_loading').show();
 	$.ajax({

@@ -78,7 +78,7 @@ function getDefaultCallbackPeriod($con, $database) {
 		printf('Binding output parameters failed for query "%s": (%d) %s' . PHP_EOL, $query_get_callback_default, $stmt->errno, $stmt->error);
 	}
 
-	return $stmt->fetchColumn()];
+	return $stmt->fetchColumn();
 }
 
 // Get the default port number of the sensor nodes
