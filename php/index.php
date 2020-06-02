@@ -29,17 +29,15 @@ function createTableRow($name, $uid, $unit, $callback_period, $room, $master_nod
 // Open the database connection
 $con = openConnection();
 
-//$result = $con->query($query_get_overview);
-$result = $con->query($query_overview["get_all"]);
-
-if (!$result) {
-	printf("Query failed: %s" . PHP_EOL, mysqli_error($con));
-	exit();
-}
-
-$sensors = array();
-while($row = $result->fetch_assoc()){
+try {
+  $sensors = array();
+  foreach ($con->query($query_overview["get_all"]) as $row) {
     $sensors[$row['id']] = $row;
+  }
+
+} catch (PDOException $e) {
+  printf("Query failed: %s" . PHP_EOL, $e->getMessage());
+  exit();
 }
 
 // Collect the latest value for each sensor

@@ -9,7 +9,7 @@ $query_get_last_id = "SELECT LAST_INSERT_ID() AS id";
 
 // Overview
 $query_overview = array(
-	"get_all" => 'SELECT S.id, S.label, S.sensor_uid AS uid, SU.unit, S.callback_period, SR.label as room, SN.hostname AS master_node FROM sensors S, sensor_units SU, sensor_nodes SN, rooms SR WHERE S.enabled AND SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = SR.id ORDER BY room, unit, master_node',
+	"get_all" => 'SELECT S.id, S.label, S.sensor_uid AS uid, SU.unit, S.callback_period, R.label as room, SN.hostname AS master_node FROM sensors S, sensor_units SU, sensor_nodes SN, rooms R WHERE S.enabled AND SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = R.id ORDER BY room, unit, master_node',
 	"get_latest_value" => 'SELECT SD.time as last_update, SD.value as last_value FROM sensor_data SD WHERE SD.sensor_id=(?) ORDER BY time DESC LIMIT 1',
 );
 // Get default callback period
@@ -31,12 +31,12 @@ $query_node = array(
 // Rooms
 $query_room = array(
 	"add" => 'INSERT INTO floorplan_rooms (id, floor, walls, low_temp_threshold, low_temp_threshold_unit_id, high_temp_threshold, high_temp_threshold_unit_id, comment) VALUES (NULL, "", "", (?), (?), (?), (?), (?))',
-	"get_all" => 'SELECT SR.id, SR.comment AS name, SR.low_temp_threshold, CONCAT(SUL.type, " [", SUL.unit, "]") AS low_temp_unit, SR.high_temp_threshold, CONCAT(SUH.type, " [", SUH.unit, "]") AS high_temp_unit, SR.enabled FROM floorplan_rooms SR, sensor_units SUL, sensor_units SUH WHERE SR.low_temp_threshold_unit_id = SUL.id AND SR.high_temp_threshold_unit_id = SUH.id ORDER BY enabled DESC, name',
+	"get_all" => 'SELECT R.id, R.comment AS name, R.low_temp_threshold, CONCAT(SUL.type, " [", SUL.unit, "]") AS low_temp_unit, R.high_temp_threshold, CONCAT(SUH.type, " [", SUH.unit, "]") AS high_temp_unit, R.enabled FROM floorplan_rooms R, sensor_units SUL, sensor_units SUH WHERE R.low_temp_threshold_unit_id = SUL.id AND R.high_temp_threshold_unit_id = SUH.id ORDER BY enabled DESC, name',
 	"delete" => "DELETE FROM floorplan_rooms WHERE id=(?)",
 	"get_high_threshold" => "SELECT ROUND(high_temp_threshold, 2) FROM floorplan_rooms WHERE id=(?)",
-	"get_high_unit" => 'SELECT CONCAT(SU.type, " [", SU.unit, "]") AS unit FROM floorplan_rooms SR, sensor_units SU WHERE SR.id=(?) AND SR.high_temp_threshold_unit_id = SU.id',
+	"get_high_unit" => 'SELECT CONCAT(SU.type, " [", SU.unit, "]") AS unit FROM floorplan_rooms R, sensor_units SU WHERE R.id=(?) AND R.high_temp_threshold_unit_id = SU.id',
 	"get_low_threshold" => "SELECT ROUND(low_temp_threshold, 2) FROM floorplan_rooms WHERE id=(?)",
-	"get_low_unit" => 'SELECT CONCAT(SU.type, " [", SU.unit, "]") AS unit FROM floorplan_rooms SR, sensor_units SU WHERE SR.id=(?) AND SR.low_temp_threshold_unit_id = SU.id',
+	"get_low_unit" => 'SELECT CONCAT(SU.type, " [", SU.unit, "]") AS unit FROM floorplan_rooms R, sensor_units SU WHERE R.id=(?) AND R.low_temp_threshold_unit_id = SU.id',
 	"get_name" => "SELECT comment AS name from floorplan_rooms WHERE id=(?)",
 	"get_enabled" => "SELECT enabled from floorplan_rooms WHERE id=(?)",
 	"update_high_threshold" => "UPDATE floorplan_rooms SET high_temp_threshold=(?) WHERE id=(?)",
@@ -50,7 +50,7 @@ $query_room = array(
 // Sensors
 $query_sensor = array(
 	"add" => "INSERT INTO sensors (id, sensor_uid, name, unit_id, node_id, room_id, callback_period) VALUES (NULL, (?), (?), (?), (?), (?), (?))",
-	"get_all" => "SELECT S.id, S.label, S.sensor_uid AS uid, S.unit_id, S.callback_period, SR.label AS room, SN.hostname AS master_node, S.enabled FROM sensors S, sensor_units SU, sensor_nodes SN, rooms SR WHERE SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = SR.id ORDER BY enabled DESC, room, unit, master_node",
+	"get_all" => "SELECT S.id, S.label, S.sensor_uid AS uid, S.unit_id, S.callback_period, R.label AS room, SN.hostname AS master_node, S.enabled FROM sensors S, sensor_units SU, sensor_nodes SN, rooms R WHERE SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = R.id ORDER BY enabled DESC, room, unit, master_node",
 	"get_name" => "SELECT label FROM sensors WHERE id=(?)",
 	"get_callback" => "SELECT callback_period FROM sensors WHERE id=(?)",
 	"get_node" => "SELECT SN.hostname FROM sensors S, sensor_nodes SN WHERE S.node_id = SN.id AND S.id=(?)",

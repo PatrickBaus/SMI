@@ -4,21 +4,22 @@
 function openConnection($timezone = null) {
   try {
     global $database_host, $username, $password, $database, $database_port;
-    $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;options=\'--client_encoding=UTF8\';user=%s;password=%s", 
+    $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
       $database_host, 
       $database_port, 
       $database, 
       $username, 
       $password
     );
-  	$con = new PDO($conStr);
+    $con = new PDO($conStr);
+    $con->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
     // Set the timezone for this connection
     $stmt = $con->prepare('SET time_zone = ?');
     if ($timezone === null) {
-      $stmt->bind_param('s', date_default_timezone_get());
+      $stmt->bindParam(1, date_default_timezone_get(), PDO::PARAM_STR);
     } else {
-  	  $stmt->bind_param('s', $timezone);
+      $stmt->bindParam(1, $timezone, PDO::PARAM_STR);
     }
     $stmt->execute();
 
