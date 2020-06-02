@@ -30,11 +30,11 @@ $query_node = array(
 
 // Rooms
 $query_room = array(
-	"add" => 'INSERT INTO floorplan_rooms (id, floor, walls, low_temp_threshold, low_temp_threshold_unit_id, high_temp_threshold, high_temp_threshold_unit_id, comment) VALUES (NULL, "", "", (?), (?), (?), (?), (?))',
-	"get_all" => 'SELECT R.id, R.label AS name FROM rooms R ORDER BY name',
-	"delete" => "DELETE FROM floorplan_rooms WHERE id=(?)",
-	"get_name" => "SELECT comment AS name from floorplan_rooms WHERE id=(?)",
-	"update_name" => "UPDATE floorplan_rooms SET comment=(?) WHERE id=(?)",
+	"add" => 'INSERT INTO rooms (label) VALUES ((?))',
+	"get_all" => 'SELECT id, label AS name FROM rooms ORDER BY name',
+	"delete" => "DELETE FROM rooms WHERE id=(?)",
+	"get_name" => "SELECT label AS name from rooms WHERE id=(?)",
+	"update_name" => "UPDATE rooms SET label=(?) WHERE id=(?)",
 );
 
 // Sensors
