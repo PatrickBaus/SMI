@@ -58,10 +58,9 @@ echo <<<EOF
 
 EOF;
 
-while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+foreach($result as $row) {
 	echo createTableRow($row['id'], $row['unit']);
 }
-$result->close();
 
 // Close the database connection
 closeConnection($con);

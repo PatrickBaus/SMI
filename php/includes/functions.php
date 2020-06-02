@@ -42,10 +42,9 @@ function getUnits($con) {
 	global $query_get_units;
 	$units = array();
 	$result = $con->query($query_get_units);
-	while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	while($row = $result->fetch()) {
 		$units[$row['id']] = $row['unit'];
 	}
-	$result->close();
 	return $units;
 }
 
@@ -54,10 +53,9 @@ function getNodes($con) {
 	global $query_get_nodes;
 	$nodes = array();
 	$result = $con->query($query_get_nodes);
-	while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	while($row = $result->fetch()) {
 		$nodes[$row['id']] = $row['hostname'];
 	}
-	$result->close();
 	return $nodes;
 }
 
@@ -66,65 +64,31 @@ function getRooms($con) {
 	global $query_get_rooms;
 	$rooms = array();
 	$result = $con->query($query_get_rooms);
-	while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	while($row = $result->fetch()) {
 		$rooms[$row['id']] = ($row['room'] == "" ? "ID: " . $row['id'] : $row['room']);
 	}
-	$result->close();
 	return $rooms;
 }
 
 // Get default callback period
 function getDefaultCallbackPeriod($con, $database) {
 	global $query_get_callback_default;
-	if (!($stmt = $con->prepare($query_get_callback_default))) {
-		printf('Prepare failed for query "%s": (%d) %s' . PHP_EOL, $query_get_callback_default, $mysqlCon->errno, $mysqlCon->error);
-		exit();
-        };
-
-	if (!$stmt->bind_param("s", $database)) {
-		printf('Binding parameters failed for query "%s": (%d) %s' . PHP_EOL, $query_get_callback_default, $stmt->errno, $stmt->error);
-		exit();
-	}
-
-	if (!$stmt->execute()) {
-		printf('Execute failed for query "%s": (%d) %s' . PHP_EOL, $query_get_callback_default, $stmt->errno, $stmt->error);
-		exit();
-	}
-	$callback_period = 0;
-	if (!$stmt->bind_result($callback_period)) {
+  $stmt = $con->query($query_get_callback_default);
+	if (!$stmt) {
 		printf('Binding output parameters failed for query "%s": (%d) %s' . PHP_EOL, $query_get_callback_default, $stmt->errno, $stmt->error);
 	}
 
-	$stmt->fetch();
-	$stmt->close();
-	return $callback_period;
+	return $stmt->fetchColumn()];
 }
 
 // Get the default port number of the sensor nodes
 // For Tinkerforge deamons this is 4223.
 function getDefaultDaemonPort($con, $database) {
-	global $query_get_port_default;
-	if (!($stmt = $con->prepare($query_get_port_default))) {
-		printf('Prepare failed for query "%s": (%d) %s' . PHP_EOL, $query_get_port_default, $mysqlCon->errno, $mysqlCon->error);
-		exit();
-        };
-
-	if (!$stmt->bind_param("s", $database)) {
-		printf('Binding parameters failed for query "%s": (%d) %s' . PHP_EOL, $query_get_port_default, $stmt->errno, $stmt->error);
-		exit();
-	}
-
-	if (!$stmt->execute()) {
-		printf('Execute failed for query "%s": (%d) %s' . PHP_EOL, $query_get_port_default, $stmt->errno, $stmt->error);
-		exit();
-	}
-	$port = 0;
-	if (!$stmt->bind_result($port)) {
-		printf('Binding output parameters failed for query "%s": (%d) %s' . PHP_EOL, $query_get_port_default, $stmt->errno, $stmt->error);
-	}
-
-	$stmt->fetch();
-	$stmt->close();
-	return $port;
+  global $query_get_port_default;
+  $stmt = $con->query($query_get_port_default);
+  if (!$stmt) {
+    printf('Binding output parameters failed for query "%s": (%d) %s' . PHP_EOL, $query_get_callback_default, $stmt->errno, $stmt->error);
+  }
+  return $stmt->fetchColumn();
 }
 ?>

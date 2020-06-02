@@ -15,13 +15,11 @@ function openConnection($timezone = null) {
     $con->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
     // Set the timezone for this connection
-    $stmt = $con->prepare('SET time_zone = ?');
     if ($timezone === null) {
-      $stmt->bindParam(1, date_default_timezone_get(), PDO::PARAM_STR);
+      $con->exec("SET SESSION TIME ZONE '" . date_default_timezone_get() . "';");
     } else {
-      $stmt->bindParam(1, $timezone, PDO::PARAM_STR);
+      $con->exec("SET SESSION TIME ZONE '" . $timezone . "';");
     }
-    $stmt->execute();
 
     return $con;
   } catch (PDOException $e) {

@@ -13,7 +13,8 @@ $query_overview = array(
 	"get_latest_value" => 'SELECT SD.time as last_update, SD.value as last_value FROM sensor_data SD WHERE SD.sensor_id=(?) ORDER BY time DESC LIMIT 1',
 );
 // Get default callback period
-$query_get_callback_default = 'SELECT COLUMN_DEFAULT FROM INFORMATION_SCHEMA.columns WHERE TABLE_SCHEMA=(?) AND TABLE_NAME="sensors" AND COLUMN_NAME="callback_period"';
+SELECT * FROM INFORMATION_SCHEMA.columns WHERE table_name='sensors' AND column_name='callback_period';
+$query_get_callback_default = "SELECT column_default FROM INFORMATION_SCHEMA.columns WHERE table_name='sensors' AND column_name='callback_period'";
 // Get the default port number used by the sensor daemons
 $query_get_port_default = 'SELECT COLUMN_DEFAULT FROM INFORMATION_SCHEMA.columns WHERE TABLE_SCHEMA=(?) AND TABLE_NAME="sensor_nodes" AND COLUMN_NAME="port"';
 
@@ -31,20 +32,10 @@ $query_node = array(
 // Rooms
 $query_room = array(
 	"add" => 'INSERT INTO floorplan_rooms (id, floor, walls, low_temp_threshold, low_temp_threshold_unit_id, high_temp_threshold, high_temp_threshold_unit_id, comment) VALUES (NULL, "", "", (?), (?), (?), (?), (?))',
-	"get_all" => 'SELECT R.id, R.comment AS name, R.low_temp_threshold, CONCAT(SUL.type, " [", SUL.unit, "]") AS low_temp_unit, R.high_temp_threshold, CONCAT(SUH.type, " [", SUH.unit, "]") AS high_temp_unit, R.enabled FROM floorplan_rooms R, sensor_units SUL, sensor_units SUH WHERE R.low_temp_threshold_unit_id = SUL.id AND R.high_temp_threshold_unit_id = SUH.id ORDER BY enabled DESC, name',
+	"get_all" => 'SELECT R.id, R.label AS name FROM rooms R ORDER BY name',
 	"delete" => "DELETE FROM floorplan_rooms WHERE id=(?)",
-	"get_high_threshold" => "SELECT ROUND(high_temp_threshold, 2) FROM floorplan_rooms WHERE id=(?)",
-	"get_high_unit" => 'SELECT CONCAT(SU.type, " [", SU.unit, "]") AS unit FROM floorplan_rooms R, sensor_units SU WHERE R.id=(?) AND R.high_temp_threshold_unit_id = SU.id',
-	"get_low_threshold" => "SELECT ROUND(low_temp_threshold, 2) FROM floorplan_rooms WHERE id=(?)",
-	"get_low_unit" => 'SELECT CONCAT(SU.type, " [", SU.unit, "]") AS unit FROM floorplan_rooms R, sensor_units SU WHERE R.id=(?) AND R.low_temp_threshold_unit_id = SU.id',
 	"get_name" => "SELECT comment AS name from floorplan_rooms WHERE id=(?)",
-	"get_enabled" => "SELECT enabled from floorplan_rooms WHERE id=(?)",
-	"update_high_threshold" => "UPDATE floorplan_rooms SET high_temp_threshold=(?) WHERE id=(?)",
-	"update_high_unit" => "UPDATE floorplan_rooms SET high_temp_threshold_unit_id=(?) WHERE id=(?)",
-	"update_low_threshold" => "UPDATE floorplan_rooms SET low_temp_threshold=(?) WHERE id=(?)",
-	"update_low_unit" => "UPDATE floorplan_rooms SET low_temp_threshold_unit_id=(?) WHERE id=(?)",
 	"update_name" => "UPDATE floorplan_rooms SET comment=(?) WHERE id=(?)",
-	"update_enabled" => "UPDATE floorplan_rooms SET enabled=(?) WHERE id=(?)",
 );
 
 // Sensors
@@ -70,8 +61,8 @@ $query_sensor = array(
 
 // Units
 $query_unit = array(
-	"add" => "INSERT INTO sensor_units (id, unit) VALUES (NULL, (?))",
-	"get_all" => "SELECT SU.id, SU.type, SU.unit FROM sensor_units SU ORDER BY type, unit",
+  "add" => "INSERT INTO sensor_units (unit) VALUES ((?)) RETURNING id",
+	"get_all" => "SELECT SU.id, SU.unit FROM sensor_units SU ORDER BY unit",
 	"get_unit" => "SELECT unit FROM sensor_units WHERE id=(?)",
 	"delete" => "DELETE FROM sensor_units WHERE id=(?)",
 	"update_unit" => "UPDATE sensor_units SET unit=(?) WHERE id=(?)",

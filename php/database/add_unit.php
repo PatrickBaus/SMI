@@ -3,40 +3,33 @@
 <?php
 //Functions
 function addunit($mysqlCon, $query, $unit) {
-	global $query_get_last_id;
+  global $query_get_last_id;
 
-	if (!($stmt = $mysqlCon->prepare($query))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
-		exit();
-	}
-	if (!$stmt->bind_param("s", $unit)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
-		exit();
-	}
-	if (!$stmt->execute()) {
-		if ($stmt->errno == 1062) {
-			echo "Unit already exists.";
-		} else {
-			printf('Execute failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
-		}
-		exit();
-	}
+  if (!($stmt = $mysqlCon->prepare($query))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
+    exit();
+  }
+  if (!$stmt->bindParam(1, $unit, PDO::PARAM_STR)) {
+    printf('Binding parameters failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
+    exit();
+  }
+  if (!$stmt->execute()) {
+    if ($stmt->errno == 1062) {
+      echo "Unit already exists.";
+    } else {
+      printf('Execute failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
+    }
+    exit();
+  }
 
-	$id = "";
-	if ($result = $mysqlCon->query($query_get_last_id)) {
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-	        $id = $row['id'];
-		$result->close();
-	}
+  $id = $stmt->fetchColumn();
 
-	$success = ($stmt->affected_rows > 0) && !empty($id);
-	$stmt->close();
-	return ($success ? "0&id=" . $id : 1);
+  return ("0&id=" . $id);
 }
 
 if (! isset($_POST["unit"])) {
 	echo "Invalid arguments.";
-        exit();
+  exit();
 }
 
 $unit = $_POST["unit"];

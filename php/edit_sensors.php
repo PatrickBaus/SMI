@@ -131,7 +131,7 @@ echo <<<EOF
 			<div class="tableRow">
 				<div class="tableHeader">Name</div>
 				<div class="tableHeader">Uid</div>
-				<div class="tableHeader">Type and Unit</div>
+				<div class="tableHeader">Unit</div>
 				<div class="tableHeader">Measurement Intervall [ms]</div>
 				<div class="tableHeader">Room</div>
 				<div class="tableHeader">Master Node</div>
@@ -141,10 +141,9 @@ echo <<<EOF
 
 EOF;
 
-while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+foreach($result as $row) {
 	echo createTableRow($row['id'], $row['label'], $row['uid'], $units[$row['unit_id']], $row['callback_period'], $row['room'], $row['master_node'], $row['enabled']);
 }
-$result->close();
 
 // Close the database connection
 closeConnection($con);

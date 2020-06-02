@@ -5,60 +5,46 @@
 $filter_regex_id = "/^type=(delete|unit)&unit_id=(\d+)/";
 
 //Functions
-function deleteUnit($mysqlCon, $query_delete, $unit_id) {
-	if (!($stmt = $mysqlCon->prepare($query_delete))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $mysqlCon->errno, $mysqlCon->error);
-		exit();
-	}
-	if (!$stmt->bind_param("i", $unit_id)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
-		exit();
-	}
-	if (!$stmt->execute()) {
-		printf('Execute failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
-		exit();
-	}
-	$success = ($stmt->affected_rows > 0);
-	$stmt->close();
-	return ($success ? 0 : 1);
+function deleteUnit($con, $query_delete, $unit_id) {
+  if (!($stmt = $con->prepare($query_delete))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $con->errno, $con->error);
+    exit();
+  }
+  $stmt->bindParam(1, $unit_id, PDO::PARAM_INT);
+  if (!$stmt->execute()) {
+    printf('Execute failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
+    exit();
+  }
+  return ($stmt->rowCount() > 0);
 }
 
-function updateUnit($mysqlCon, $query_update, $query_get, $unitId, $update) {
-	if (!($stmt = $mysqlCon->prepare($query_update))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $mysqlCon->errno, $mysqlCon->error);
+function updateUnit($con, $query_update, $query_get, $unitId, $update) {
+	if (!($stmt = $con->prepare($query_update))) {
+		printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $con->errno, $con->error);
 		exit();
 	};
-	if (!$stmt->bind_param("si", $update, $unitId)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_update, $stmt->errno, $stmt->error);
-		exit();
-	}
+	$stmt->bindParam(1, $update, PDO::PARAM_INT);
+	$stmt->bindParam(2, $unitId, PDO::PARAM_INT);
 	if (!$stmt->execute()) {
 		printf('Execute failed for query "%s": (%d) %s\n', $query_update, $stmt->errno, $stmt->error);
 		exit();
 	}
-	$stmt->close();
 
 	// Get the new value
-	if (!($stmt = $mysqlCon->prepare($query_get))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query_get, $mysqlCon->errno, $mysqlCon->error);
+	if (!($stmt = $con->prepare($query_get))) {
+		printf('Prepare failed for query "%s": (%d) %s\n', $query_get, $con->errno, $con->error);
 		exit();
 	};
-	if (!$stmt->bind_param("i", $unitId)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
-		exit();
-	}
+	$stmt->bindParam(1, $unitId, PDO::PARAM_INT);
 	if (!$stmt->execute()) {
 		printf('Execute failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
 		exit();
 	}
-	$name = NULL;
-	if (!$stmt->bind_result($name)) {
+	if (!$stmt->execute()) {
 		printf('Binding output parameters failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
 	}
 
-	$stmt->fetch();
-	$stmt->close();
-	return $name;
+	return $stmt->fetchColumn();
 }
 
 if (!isset($_POST["id"])) {
@@ -79,7 +65,7 @@ $con = openConnection();
 // When adding to this switch command do not forget to add the new cases to $filter_regex
 switch ($command) {
 	case "delete":
-		if (deleteUnit($con, $query_unit["delete"], $unit_id) != 0) {
+		if (!deleteUnit($con, $query_unit["delete"], $unit_id)) {
 			echo "Invalid unit";
 		} else {
 			echo "0";

@@ -62,9 +62,7 @@ krsort($rooms);
 
 // Extract first value's date from database
 $result = $con->query($query_export["get_first_date"]);
-$row = $result->fetch_array(MYSQLI_ASSOC);
-$firstDate = $row['date'];
-$result->close();
+$firstDate = $result->fetchColumn();
 
 echo <<<EOF
 	<script type="text/javascript" src="static/js/jquery.simple-dtpicker.js"></script>
@@ -127,10 +125,9 @@ if (!$result) {
 	exit();
 }
 
-while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-	$rooms[$row['room_name']][$row['id']] = $row['label'];
+foreach($result as $row) {
+        $rooms[$row['room_name']][$row['id']] = $row['label'];
 }
-$result->close();
 
 // Close the database connection
 closeConnection($con);

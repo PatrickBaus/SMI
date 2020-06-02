@@ -48,7 +48,7 @@ foreach($sensors as $sensor) {
 		printf('Prepare failed for query "%s": (%d) %s\n', $query_overview['get_latest'], $mysqlCon->errno, $mysqlCon->error);
 		exit();
 	}
-	if (!$stmt->bind_param("s", $sensor['id'])) {
+	if (!$stmt->bindParam(1, $sensor['id'], PDO::PARAM_INT)) {
 		printf('Binding parameters failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
 		exit();
 	}
@@ -57,8 +57,7 @@ foreach($sensors as $sensor) {
 		exit();
 	}
 	
-	$result = $stmt->get_result();
-	while($row = $result->fetch_assoc()){
+	foreach($stmt as $row){
 		$sensors[$sensor['id']]['last_update'] = $row['last_update'];
 		$sensors[$sensor['id']]['last_value'] = $row['last_value'];
 	}
@@ -85,7 +84,7 @@ foreach($sensors as $sensor) {
 	$last_update = new DateTime($sensor['last_update']);
 	$last_update->setTimeZone(new DateTimeZone(date_default_timezone_get()));
 
-	echo createTableRow($sensor['name'], $sensor['uid'], $sensor['unit'], $sensor['callback_period'], $sensor['room'], $sensor['master_node'], $last_update->format('H:i:s d-M-Y T'), $sensor['last_value']. " " . $sensor['unit']);
+	echo createTableRow($sensor['label'], $sensor['uid'], $sensor['unit'], $sensor['callback_period'], $sensor['room'], $sensor['master_node'], $last_update->format('H:i:s d-M-Y T'), $sensor['last_value']. " " . $sensor['unit']);
 }
 echo "</div>" . PHP_EOL;
 

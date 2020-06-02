@@ -40,7 +40,7 @@ function addBtnClickFunction() {
 				$('#message_add').html("Successfully added new unit with id " + id)
 				.removeClass()
 				.addClass("successBox");
-				$('#unitsTable').append(createTableRow(id, type, unit));
+				$('#unitsTable').append(createTableRow(id, unit));
 				AddAllJEditables();
 				$('.deleteButton').click(deleteBtnClickFunction);
 			} else {
@@ -93,10 +93,8 @@ function sprintf(format, etc) {
     return format.replace(/%((%)|s)/g, function (m) { return m[2] || arg[i++] })
 }
 
-function createTableRow(id, type, unit) {
+function createTableRow(id, unit) {
 	var html = "\t\t" + '<div class="tableRow">' + "\n";
-	var tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit editableCell" id="type=type&unit_id=%s">%s</div></div>' + "\n";
-	html = html + sprintf(tableRow, id, type);
 	tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit editableCell" id="type=unit&unit_id=%s">%s</div></div>' + "\n";
 	html = html + sprintf(tableRow, id, unit);
 	tableRow = "\t\t\t" + ' <div class="tableCell"><button id="unit_id=%s" class="button deleteButton">Delete</button></div>' + "\n";
