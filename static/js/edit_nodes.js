@@ -41,7 +41,7 @@ function addBtnClickFunction() {
 		return false;
 	}
 	var label = $('input#add_label').val();
-	if label == "" {
+	if (label === "") {
 		label = hostname;
 	}
 	var port = parseInt($('input#add_port').val(), 10);
