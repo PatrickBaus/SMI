@@ -32,7 +32,7 @@ function addNode($mysqlCon, $query, $hostname, $label, $port) {
 
 if (! (isset($_POST["hostname"]) && isset($_POST["label"]) && isset($_POST["port"]))) {
   echo "Invalid arguments.";
-        exit();
+  exit();
 }
 
 $hostname = $_POST["hostname"];
@@ -45,8 +45,12 @@ if (filter_var($port, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1
   exit();
 }
 if (!preg_match($filter_url, $hostname)) {
-        echo "Invalid hostname. Please enter a domain hostname or ip address.";
-        exit();
+  echo "Invalid hostname. Please enter a domain hostname or ip address.";
+  exit();
+}
+if (!strlen($label)) {
+  echo "Invalid label. Please enter a label.";
+  exit();
 }
 
 // Open the database connection
