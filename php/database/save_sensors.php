@@ -19,7 +19,7 @@ function deleteSensor($mysqlCon, $query_delete, $sensor_id) {
 		printf('Execute failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
 		exit();
 	}
-	return ($stmt->rowCount > 0);
+	return ($stmt->rowCount() > 0);
 }
 
 function updateSensor($mysqlCon, $query_update, $query_get, $sensorId, $update) {
