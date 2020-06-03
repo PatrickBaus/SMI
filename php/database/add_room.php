@@ -3,8 +3,6 @@
 <?php
 //Functions
 function addRoom($mysqlCon, $query, $name) {
-  global $query_get_last_id;
-
   if (!($stmt = $mysqlCon->prepare($query))) {
     printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
     exit();

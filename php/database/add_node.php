@@ -6,8 +6,6 @@ $filter_url = "/^((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1
 
 //Functions
 function addNode($mysqlCon, $query, $hostname, $label, $port) {
-  global $query_get_last_id;
-
   if (!($stmt = $mysqlCon->prepare($query))) {
     printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
     exit();

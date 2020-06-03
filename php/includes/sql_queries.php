@@ -4,9 +4,6 @@ $query_get_units = 'SELECT id, unit FROM sensor_units ORDER BY unit';
 $query_get_nodes = "SELECT id, hostname FROM sensor_nodes ORDER BY hostname";
 $query_get_rooms = "SELECT id, label AS room FROM rooms ORDER BY room";
 
-// Get last auto increment id inserted
-$query_get_last_id = "SELECT LAST_INSERT_ID() AS id";
-
 // Overview
 $query_overview = array(
 	"get_all" => 'SELECT S.id, S.label, S.sensor_uid AS uid, SU.unit, S.callback_period, R.label as room, SN.hostname AS master_node FROM sensors S, sensor_units SU, sensor_nodes SN, rooms R WHERE S.enabled AND SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = R.id ORDER BY room, unit, master_node',
