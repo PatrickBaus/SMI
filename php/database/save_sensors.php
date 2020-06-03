@@ -11,7 +11,7 @@ function deleteSensor($mysqlCon, $query_delete, $sensor_id) {
 		printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $mysqlCon->errno, $mysqlCon->error);
 		exit();
 	}
-	if (!$stmt->bind_param("i", $sensor_id)) {
+	if (!$stmt->bindParam(1, $sensor_id, PDO::PARAM_INT)) {
 		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
 		exit();
 	}
@@ -19,9 +19,7 @@ function deleteSensor($mysqlCon, $query_delete, $sensor_id) {
 		printf('Execute failed for query "%s": (%d) %s\n', $query_delete, $stmt->errno, $stmt->error);
 		exit();
 	}
-	$success = ($stmt->affected_rows > 0);
-	$stmt->close();
-	return ($success ? 0 : 1);
+	return ($stmt->affected_rows > 0);
 }
 
 function updateSensor($mysqlCon, $query_update, $query_get, $sensorId, $update) {
@@ -66,7 +64,7 @@ switch ($command) {
 		}
 		break;
 	case "delete":
-		if (deleteSensor($con, $query_sensor["delete"], $sensor_id) != 0) {
+		if (!deleteSensor($con, $query_sensor["delete"], $sensor_id)) {
 			echo "Invalid node.";
 		} else {
 			echo "0";

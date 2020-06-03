@@ -37,7 +37,7 @@ $query_room = array(
 
 // Sensors
 $query_sensor = array(
-	"add" => "INSERT INTO sensors (id, sensor_uid, name, unit_id, node_id, room_id, callback_period) VALUES (NULL, (?), (?), (?), (?), (?), (?))",
+	"add" => "INSERT INTO sensors (sensor_uid, label, unit_id, node_id, room_id, callback_period) VALUES ((?), (?), (?), (?), (?), (?)) RETURNING id",
 	"get_all" => "SELECT S.id, S.label, S.sensor_uid AS uid, S.unit_id, S.callback_period, R.label AS room, SN.hostname AS master_node, S.enabled FROM sensors S, sensor_units SU, sensor_nodes SN, rooms R WHERE SN.id = S.node_id AND S.unit_id = SU.id AND S.room_id = R.id ORDER BY enabled DESC, room, unit, master_node",
 	"get_name" => "SELECT label FROM sensors WHERE id=(?)",
 	"get_callback" => "SELECT callback_period FROM sensors WHERE id=(?)",

@@ -6,39 +6,33 @@ $filter_regex_uid = "/^[123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWX
 
 //Functions
 function addSensor($mysqlCon, $query, $name, $uid, $unit, $callback_period, $node, $room) {
-	global $query_get_last_id;
+  if (!($stmt = $mysqlCon->prepare($query))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
+    exit();
+  }
+  $stmt->bindParam(1, $uid, PDO::PARAM_STR);
+  $stmt->bindParam(2, $name, PDO::PARAM_STR);
+  $stmt->bindParam(3, $unit, PDO::PARAM_INT);
+  $stmt->bindParam(4, $node, PDO::PARAM_INT);
+  $stmt->bindParam(5, $room, PDO::PARAM_INT);
+  $stmt->bindParam(6, $callback_period, PDO::PARAM_STR);
 
-	if (!($stmt = $mysqlCon->prepare($query))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
-		exit();
-	}
-	if (!$stmt->bind_param("ssiiii", $uid, $name, $unit, $node, $room, $callback_period)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
-		exit();
-	}
-	if (!$stmt->execute()) {
-		if ($stmt->errno == 1062) {
-			echo "Name already exists.";
-		} else {
-			printf('Execute failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
-		}
-		exit();
-	}
-	
-	$id = "";
-	if ($result = $mysqlCon->query($query_get_last_id)) {
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-	        $id = $row['id'];
-		$result->close();
-	}
+  if (!$stmt->execute()) {
+    if ($stmt->errno == 1062) {
+      echo "Name already exists.";
+    } else {
+      printf('Execute failed for query "%s": (%d) %s\n', $query, $stmt->errno, $stmt->error);
+    }
+    exit();
+  }
 
-	$success = ($stmt->affected_rows > 0) && !empty($id);
-	$stmt->close();
-	return ($success ? "0&id=" . $id : 1);
+  $id = $stmt->fetchColumn();
+
+  return ("0&id=" . $id);
 }
 
 if (! (isset($_POST["name"]) && isset($_POST["uid"]) && isset($_POST["unit"]) && isset($_POST["callback"]) && isset($_POST["room"]) && isset($_POST["node"]))) {
-	echo "Invalid arguments.";
+  echo "Invalid arguments.";
         exit();
 }
 
@@ -51,25 +45,25 @@ $room = $_POST["room"];
 
 // Check the input
 if (filter_var($unit, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1))) === False) {
-	echo "Invalid unit.";
-	exit();
-	}
+  echo "Invalid unit.";
+  exit();
+  }
 if (filter_var($callback_period, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1))) === False) {
-	echo "Invalid time: " . $callback_period;
-	exit();
+  echo "Invalid time: " . $callback_period;
+  exit();
 }
 if (filter_var($node, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1))) === False) {
-	echo "Invalid node.";
-	exit();
+  echo "Invalid node.";
+  exit();
 }
 if (filter_var($room, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1))) === False) {
-	echo "Invalid room.";
-	exit();
+  echo "Invalid room.";
+  exit();
 
 }
 if (!preg_match($filter_regex_uid, $uid)) {
-	echo "Invalid uid. Make sure it is Base58 encoded.";
-	exit();
+  echo "Invalid uid. Make sure it is Base58 encoded.";
+  exit();
 }
 
 // Open the database connection
