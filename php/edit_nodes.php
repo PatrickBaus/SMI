@@ -3,17 +3,19 @@
 <?php require_once("includes/database.php");?>
 <?php
 // Functions
-function createTableRow($id, $name, $port) {
-	$filler = "\t\t\t";
+function createTableRow($id, $hostname, $label, $port) {
+  $filler = "\t\t\t";
 
-	$html = $filler . '<div class="tableRow">' . PHP_EOL;
-	$tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=name&node_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $name);
-	$tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=port&node_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $port);
-	$tableRow = $filler . "\t" . '<div class="tableCell"><button id="node_id=%d" class="button deleteButton">Delete</button></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id);
-	$html .= $filler . "</div>" . PHP_EOL;
+  $html = $filler . '<div class="tableRow">' . PHP_EOL;
+  $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=hostname&node_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $hostname);
+  $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=label&node_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $label);
+  $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=port&node_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $port);
+  $tableRow = $filler . "\t" . '<div class="tableCell"><button id="node_id=%d" class="button deleteButton">Delete</button></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id);
+  $html .= $filler . "</div>" . PHP_EOL;
 
 	return $html;
 }
@@ -24,8 +26,8 @@ $con = openConnection();
 // Extract all units from the database
 $result = $con->query($query_node["get_all"]);
 if (!$result) {
-	printf("Query failed: %s" . PHP_EOL, mysqli_error($con));
-	exit();
+  printf("Query failed: %s" . PHP_EOL, mysqli_error($con));
+  exit();
 }
 
 // Extract the default port number used by the sensor daemons
@@ -47,7 +49,8 @@ echo <<<EOF
 		<div id="message_add"></div>
 		<div class="table">
 			<div class="tableRow">
-				<div class="tableCell"><input type="text" id="add_name" placeholder="DNS name or IP" class="input_add"></div>
+				<div class="tableCell"><input type="text" id="add_hostname" placeholder="DNS name or IP" class="input_add"></div>
+				<div class="tableCell"><input type="text" id="add_label" placeholder="label" class="input_add"></div>
 				<div class="tableCell"><input type="text" id="add_port" placeholder="Port (def: {$default_port})" class="input_add"></div>
 				<div class="tableCell">
 					<button id="add_button" class="button addButton">Add</button>
@@ -59,7 +62,8 @@ echo <<<EOF
 		<div id="message_edit"></div>
 		<div id="nodesTable" class="table">
 			<div class="tableRow">
-				<div class="tableHeader">Name</div>
+				<div class="tableHeader">Hostname</div>
+				<div class="tableHeader">Label</div>
 				<div class="tableHeader">Port</div>
 				<div class="tableHeader"></div>
 			</div>
@@ -67,7 +71,7 @@ echo <<<EOF
 EOF;
 
 foreach($result as $row) {
-	echo createTableRow($row['id'], $row['hostname'], $row['port']);
+  echo createTableRow($row['id'], $row['hostname'], $row['label'], $row['port']);
 }
 
 // Close the database connection

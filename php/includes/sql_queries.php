@@ -15,17 +15,16 @@ $query_overview = array(
 // Get default callback period
 $query_get_callback_default = "SELECT column_default FROM INFORMATION_SCHEMA.columns WHERE table_name='sensors' AND column_name='callback_period'";
 // Get the default port number used by the sensor daemons
-$query_get_port_default = 'SELECT COLUMN_DEFAULT FROM INFORMATION_SCHEMA.columns WHERE TABLE_SCHEMA=(?) AND TABLE_NAME="sensor_nodes" AND COLUMN_NAME="port"';
+$query_get_port_default = "SELECT column_default FROM INFORMATION_SCHEMA.columns WHERE table_name='sensor_nodes' AND column_name='port'";
 
 // Nodes
 $query_node = array(
-	"add" => "INSERT INTO sensor_nodes (id, hostname, port) VALUES (NULL, (?), (?))",
-	"get_all" => "SELECT SN.id, SN.hostname, SN.port FROM sensor_nodes SN ORDER BY hostname",
-	"get_name" => "SELECT hostname FROM sensor_nodes WHERE id=(?)",
-	"get_port" => "SELECT port FROM sensor_nodes WHERE id=(?)",
+	"add" => "INSERT INTO sensor_nodes (hostname, label, port) VALUES ((?), (?), (?)) RETURNING id",
+	"get_all" => "SELECT id, hostname, label, port FROM sensor_nodes ORDER BY label",
 	"delete" => "DELETE FROM sensor_nodes WHERE id=(?)",
-	"update_name" => "UPDATE sensor_nodes SET hostname=(?) WHERE id=(?)",
-	"update_port" => "UPDATE sensor_nodes SET port=(?) WHERE id=(?)",
+	"update_hostname" => "UPDATE sensor_nodes SET hostname=(?) WHERE id=(?) RETURNING hostname",
+	"update_label" => "UPDATE sensor_nodes SET label=(?) WHERE id=(?) RETURNING label",
+	"update_port" => "UPDATE sensor_nodes SET port=(?) WHERE id=(?) RETURNING port",
 );
 
 // Rooms

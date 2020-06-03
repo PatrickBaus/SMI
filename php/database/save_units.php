@@ -2,7 +2,7 @@
 <?php require_once("../includes/sql_queries.php");?>
 <?php
 //Constants
-$filter_regex_id = "/^type=(delete|unit)&unitId=(\d+)/";
+$filter_regex_id = "/^type=(delete|unit)&unit_id=(\d+)/";
 
 //Functions
 function deleteUnit($con, $query_delete, $unitId) {
