@@ -51,7 +51,7 @@ function addBtnClickFunction() {
 		return false;
 	}
 
-	var dataString = "hostname=" + hostname "&label" + label + "&port=" + port;
+	var dataString = "hostname=" + hostname + "&label=" + label + "&port=" + port;
 	$('#add_button').hide();
 	$('#add_loading').show();
 	$.ajax({
