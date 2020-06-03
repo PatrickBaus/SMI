@@ -417,10 +417,10 @@
 			}
 
 			// Set width to assure date and time are side by side
-			if ($(".datepicker_calendar", $picker).width() !== 0 && $(
-					".datepicker_timelist", $picker).width() !== 0) {
-				$picker.parent().width($(".datepicker_calendar", $picker).width() +
-					$(".datepicker_timelist", $picker).width() + 6);
+			if ($(".datepicker_calendar", $picker).outerWidth() !== 0 && $(
+					".datepicker_timelist", $picker).outerWidth() !== 0) {
+				$picker.parent().width($(".datepicker_calendar", $picker).outerWidth() +
+					$(".datepicker_timelist", $picker).outerWidth() + 6);
 			}
 			if (parseInt($(window).height()) <= ($input.offset().top - $(document)
 					.scrollTop() + input_outer_height + picker_outer_height)) {
