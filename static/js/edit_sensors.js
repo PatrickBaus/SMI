@@ -4,7 +4,7 @@ function addJEditableSelect(selectClass, selectData, callback_function) {
 		tooltip:'Click to edit...',
 		data: selectData,
 		type: "select",
-		callback: window[callback_function],
+		callback: callback_function,
 		submit: "OK",
 	});
 }

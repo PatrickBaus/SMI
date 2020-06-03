@@ -47,13 +47,13 @@ $query_sensor = array(
 	"get_enabled" => "SELECT enabled FROM sensors WHERE id=(?)",
 	"get_unit" => 'SELECT SU.unit FROM sensors S, sensor_units SU WHERE S.unit_id = SU.id AND S.id=(?)',
 	"delete" => "DELETE FROM sensors WHERE id=(?)",
-	"update_callback" => "UPDATE sensors SET callback_period=(?) WHERE id=(?)",
-	"update_name" => "UPDATE sensors SET label=(?) WHERE id=(?)",
-	"update_room" => "UPDATE sensors SET room_id=(?) WHERE id=(?)",
-	"update_node" => "UPDATE sensors SET node_id=(?) WHERE id=(?)",
-	"update_uid" => "UPDATE sensors SET sensor_uid=(?) WHERE id=(?)",
-	"update_unit" => "UPDATE sensors SET unit_id=(?) WHERE id=(?)",
-	"update_enabled" => "UPDATE sensors SET enabled=(?) WHERE id=(?)",
+	"update_callback" => "UPDATE sensors SET callback_period=(?) WHERE id=(?) RETURNING callback_period",
+	"update_name" => "UPDATE sensors SET label=(?) WHERE id=(?) RETURNING label",
+	"update_room" => "UPDATE sensors SET room_id=(?) WHERE id=(?) RETURNING room_id",
+	"update_node" => "UPDATE sensors SET node_id=(?) WHERE id=(?) RETURNING node_id",
+	"update_uid" => "UPDATE sensors SET sensor_uid=(?) WHERE id=(?) RETURNING sensor_uid",
+	"update_unit" => "UPDATE sensors SET unit_id=(?) WHERE id=(?) RETURNING unit_id",
+	"update_enabled" => "UPDATE sensors SET enabled=(?) WHERE id=(?) RETURNING enabled",
 );
 
 // Units

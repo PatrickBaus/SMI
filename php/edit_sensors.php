@@ -70,10 +70,12 @@ echo <<<EOF
 			addJEditableSelect("edit_select_units", $units_json);
 			addJEditableSelect("edit_select_rooms", $rooms_json);
 			addJEditableSelect("edit_select_nodes", $nodes_json);
-			addJEditableSelect("edit_select_enabled", $enabled_json, "updateEnabled");
+			addJEditableSelect("edit_select_enabled", $enabled_json, updateEnabled);
 			addJEditable("edit");
-
 		}
+		function updateValue(result, status) {
+			return "You selected: " + result + ". ";
+		},
 		function updateEnabled(value, settings) {
 			if (value == "enabled") {
 			  $(this).removeClass('disabled').addClass('enabled');

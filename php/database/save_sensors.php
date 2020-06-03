@@ -29,38 +29,16 @@ function updateSensor($mysqlCon, $query_update, $query_get, $sensorId, $update) 
 		printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $mysqlCon->errno, $mysqlCon->error);
 		exit();
 	};
-	$param_type = "si";
-	if (!$stmt->bind_param($param_type, $update, $sensorId)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_update, $stmt->errno, $stmt->error);
-		exit();
-	}
+	$stmt->bindParam(1, $update, PDO::PARAM_STR);
+	$stmt->bindParam(2, $sensorId, PDO::PARAM_INT);
+
 	if (!$stmt->execute()) {
 		printf('Execute failed for query "%s": (%d) %s\n', $query_update, $stmt->errno, $stmt->error);
 		exit();
 	}
-	$stmt->close();
 
-	// Get the new node name
-	if (!($stmt = $mysqlCon->prepare($query_get))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query_get, $mysqlCon->errno, $mysqlCon->error);
-		exit();
-	};
-	if (!$stmt->bind_param("i", $sensorId)) {
-		printf('Binding parameters failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
-		exit();
-	}
-	if (!$stmt->execute()) {
-		printf('Execute failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
-		exit();
-	}
-	$name = NULL;
-	if (!$stmt->bind_result($name)) {
-		printf('Binding output parameters failed for query "%s": (%d) %s\n', $query_get, $stmt->errno, $stmt->error);
-	}
-
-	$stmt->fetch();
-	$stmt->close();
-	return $name;
+  // Get the new value
+  return $stmt->fetchColumn();
 }
 
 if (!isset($_POST["id"])) {
