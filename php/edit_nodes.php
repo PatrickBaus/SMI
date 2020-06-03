@@ -50,7 +50,7 @@ echo <<<EOF
 		<div class="table">
 			<div class="tableRow">
 				<div class="tableCell"><input type="text" id="add_hostname" placeholder="DNS name or IP" class="input_add"></div>
-				<div class="tableCell"><input type="text" id="add_label" placeholder="label" class="input_add"></div>
+				<div class="tableCell"><input type="text" id="add_label" placeholder="Label" class="input_add"></div>
 				<div class="tableCell"><input type="text" id="add_port" placeholder="Port (def: {$default_port})" class="input_add"></div>
 				<div class="tableCell">
 					<button id="add_button" class="button addButton">Add</button>

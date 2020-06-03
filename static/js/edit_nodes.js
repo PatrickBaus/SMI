@@ -41,6 +41,9 @@ function addBtnClickFunction() {
 		return false;
 	}
 	var label = $('input#add_label').val();
+	if label == "" {
+		label = hostname;
+	}
 	var port = parseInt($('input#add_port').val(), 10);
 	port = port ? port : default_port;
 	if (isNaN(port) || (port < 1) || (port > 65535) ) {
