@@ -983,7 +983,7 @@
 		}
 
 		if (isTodayButton) {
-			var $link_today = $('<a><div/></a>');
+			var $link_today = $('<a><div></div></a>');
 			$link_today.addClass('icon-home');
 			$link_today.prop('alt', translate(locale, 'today'));
 			$link_today.prop('title', translate(locale, 'today'));
@@ -993,7 +993,7 @@
 			$header.append($link_today);
 		}
 		if (isCloseButton) {
-			var $link_close = $('<a><div/></a>');
+			var $link_close = $('<a><div></div></a>');
 			$link_close.addClass('icon-close');
 			$link_close.prop('alt', translate(locale, 'close'));
 			$link_close.prop('title', translate(locale, 'close'));
