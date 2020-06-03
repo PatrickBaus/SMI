@@ -75,7 +75,7 @@ echo <<<EOF
 		}
 		function updateValue(result, status) {
 			return "You selected: " + result + ". ";
-		},
+		}
 		function updateEnabled(value, settings) {
 			if (value == "enabled") {
 			  $(this).removeClass('disabled').addClass('enabled');
