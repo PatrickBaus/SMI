@@ -111,7 +111,6 @@
 */
 
 .datepicker > .datepicker_inner_container {
-  display: flex;
 	margin: -2px 0px -2px 0px;
 	background-color: #d2d2d2;
 	border: 1px solid #c8c8c8;
@@ -138,7 +137,7 @@
 
 .datepicker > .datepicker_inner_container > .datepicker_calendar {
 	float: left;
-	width: 19em;
+	width: 18.3em;
 
 	margin-top: -0.5px;
 	margin-left: -1px;
