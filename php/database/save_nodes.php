@@ -68,11 +68,7 @@ switch ($command) {
     }
     break;
   case "label":
-    if (preg_match($filter_url, $update_value)) {
-      echo updateNode($con, $query_node["update_label"], $nodeId, $update_value);
-    } else {
-      echo "Invalid label.";
-    }
+    echo updateNode($con, $query_node["update_label"], $nodeId, $update_value);
     break;
   case "port":
     if (filter_var($update_value, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1, "max_range"=>65535)))) {
