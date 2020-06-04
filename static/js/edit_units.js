@@ -4,7 +4,6 @@ function addJEditable(className) {
 		tooltip:'Click to edit...',
 		cssclass : "inherit"
 	});
-
 }
 
 function addBtnClickFunction() {

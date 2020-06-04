@@ -7,7 +7,7 @@ function createTableRow($id, $hostname, $label, $port) {
   $filler = "\t\t\t";
 
   $html = $filler . '<div class="tableRow">' . PHP_EOL;
-  $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=hostname&node_id=%d">%s</div></div>' . PHP_EOL;
+  $tableRow = $filler . "\t" . '<div class="tableCell lowercase"><div class="edit editableCell" id="type=hostname&node_id=%d">%s</div></div>' . PHP_EOL;
   $html .= sprintf($tableRow, $id, $hostname);
   $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=label&node_id=%d">%s</div></div>' . PHP_EOL;
   $html .= sprintf($tableRow, $id, $label);
@@ -38,7 +38,8 @@ echo <<<EOF
 	<script src="static/js/edit_nodes.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		function AddAllJEditables() {
-			addJEditable("edit");
+			addJEditable("edit:not(.lowercase)");
+			addJEditableHostname("edit.lowercase");
 		}
 		$(function() {
 			AddAllJEditables();

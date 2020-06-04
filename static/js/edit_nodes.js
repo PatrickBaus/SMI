@@ -3,8 +3,16 @@ function validURL(str) {
 	return pattern.test(str);
 }
 
-function addJEditable(className) {
+function addJEditableHostname(className) {
 	$('.' + className).editable(jEditableCall, {
+		indicator: '<img src="img/indicator.gif">',
+		tooltip:'Click to edit...',
+		cssclass : "inherit"
+	});
+}
+
+function addJEditable(className) {
+	$('.' + className).editable('database/save_nodes.php', {
 		indicator: '<img src="img/indicator.gif">',
 		tooltip:'Click to edit...',
 		cssclass : "inherit"
