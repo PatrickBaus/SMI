@@ -63,44 +63,17 @@ function getData($con, $query_get_info, $query_get_data, $sensor_ids, $startDate
     exit();
   }
 
-  if (!($result = $stmt->get_result())) {
-    printf('Execute failed for query "%s": (%d) %s', $query_get_data, $con->connect_errno, $con->connect_error);
-    exit();
+  // Get the column labels
+  for ($counter = 0; $counter < $stmt->columnCount(); $counter ++) {
+    $fields[] = $stmt->getColumnMeta($counter)['name'];
   }
-  exit();
-  $fields = $result->fetch_fields();
-  foreach ($fields as $field) {
-    $header .= $field->name . ",";
-  }
-  unset($field);
-  $header = trim($header, ",");
+  $header .= implode(',', $fields);
 
   $data = "";
-  while($row = $result->fetch_assoc()) {
-    $line = '';
-    //for each field in a row
-    foreach($row as $value) {
-      //if null, create blank field
-      if ((!isset($value)) || ($value == "")){
-        $value = ",";
-      }
-      //else, assign field value to our data
-      else {
-        $value = str_replace('"' , '""' , $value);
-        $value = '"' . $value . '"' . ",";
-      }
-      //add this field value to our row
-      $line .= $value;
-    }
-    unset($value);
-    //trim whitespace and comma from each row
-    $line = trim($line, ",");
-    $data .= trim($line) . "\n";
+  while($row = $stmt->fetch(PDO::FETCH_NUM)) {
+    $data .= implode(',', $row) . "\n";
   }
-  //remove all carriage returns from the data
-  $data = str_replace( "\r" , "" , $data );
 
-  $result->close();
   return array("header" => $header, "data" => $data);
 }
 
