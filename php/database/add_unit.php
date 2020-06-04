@@ -2,9 +2,9 @@
 <?php include("../includes/sql_queries.php");?>
 <?php
 //Functions
-function addunit($mysqlCon, $query, $unit) {
-  if (!($stmt = $mysqlCon->prepare($query))) {
-    printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
+function addunit($con, $query, $unit) {
+  if (!($stmt = $con->prepare($query))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query, $con->errno, $con->error);
     exit();
   }
   if (!$stmt->bindParam(1, $unit, PDO::PARAM_STR)) {

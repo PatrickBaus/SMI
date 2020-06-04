@@ -6,9 +6,9 @@ $filter_regex_id = "/^type=(callback_period|delete|name|nodes|room|uid|unit|enab
 $filter_regex_uid = "/^[123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]+$/";
 
 //Functions
-function deleteSensor($mysqlCon, $query_delete, $sensor_id) {
-	if (!($stmt = $mysqlCon->prepare($query_delete))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $mysqlCon->errno, $mysqlCon->error);
+function deleteSensor($con, $query_delete, $sensor_id) {
+	if (!($stmt = $con->prepare($query_delete))) {
+		printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $con->errno, $con->error);
 		exit();
 	}
 	if (!$stmt->bindParam(1, $sensor_id, PDO::PARAM_INT)) {
@@ -22,9 +22,9 @@ function deleteSensor($mysqlCon, $query_delete, $sensor_id) {
 	return ($stmt->rowCount() > 0);
 }
 
-function updateSensor($mysqlCon, $query_update, $query_get, $sensorId, $update) {
-	if (!($stmt = $mysqlCon->prepare($query_update))) {
-		printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $mysqlCon->errno, $mysqlCon->error);
+function updateSensor($con, $query_update, $query_get, $sensorId, $update) {
+	if (!($stmt = $con->prepare($query_update))) {
+		printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $con->errno, $con->error);
 		exit();
 	};
 	$stmt->bindParam(1, $update, PDO::PARAM_STR);

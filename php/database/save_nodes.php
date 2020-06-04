@@ -6,9 +6,9 @@ $filter_regex_id = "/^type=(delete|hostname|label|port)&node_id=(\d+)/";
 $filter_url = "/^((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3})|(localhost))$/";
 
 //Functions
-function deleteNode($mysqlCon, $query_delete, $nodeId) {
-  if (!($stmt = $mysqlCon->prepare($query_delete))) {
-    printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $mysqlCon->errno, $mysqlCon->error);
+function deleteNode($con, $query_delete, $nodeId) {
+  if (!($stmt = $con->prepare($query_delete))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query_delete, $con->errno, $con->error);
     exit();
   }
   $stmt->bindParam(1, $nodeId, PDO::PARAM_INT);
@@ -19,9 +19,9 @@ function deleteNode($mysqlCon, $query_delete, $nodeId) {
   return ($stmt->rowCount() > 0);
 }
 
-function updateNode($mysqlCon, $query_update, $nodeId, $update) {
-  if (!($stmt = $mysqlCon->prepare($query_update))) {
-    printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $mysqlCon->errno, $mysqlCon->error);
+function updateNode($con, $query_update, $nodeId, $update) {
+  if (!($stmt = $con->prepare($query_update))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query_update, $con->errno, $con->error);
     exit();
   }
   $stmt->bindParam(1, $update, PDO::PARAM_STR);

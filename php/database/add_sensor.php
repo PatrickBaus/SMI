@@ -5,9 +5,9 @@
 $filter_regex_uid = "/^[123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]+$/";
 
 //Functions
-function addSensor($mysqlCon, $query, $name, $uid, $unit, $callback_period, $node, $room) {
-  if (!($stmt = $mysqlCon->prepare($query))) {
-    printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
+function addSensor($con, $query, $name, $uid, $unit, $callback_period, $node, $room) {
+  if (!($stmt = $con->prepare($query))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query, $con->errno, $con->error);
     exit();
   }
   $stmt->bindParam(1, $uid, PDO::PARAM_STR);

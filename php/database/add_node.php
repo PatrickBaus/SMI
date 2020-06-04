@@ -5,9 +5,9 @@
 $filter_url = "/^((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3})|(localhost))$/";
 
 //Functions
-function addNode($mysqlCon, $query, $hostname, $label, $port) {
-  if (!($stmt = $mysqlCon->prepare($query))) {
-    printf('Prepare failed for query "%s": (%d) %s\n', $query, $mysqlCon->errno, $mysqlCon->error);
+function addNode($con, $query, $hostname, $label, $port) {
+  if (!($stmt = $con->prepare($query))) {
+    printf('Prepare failed for query "%s": (%d) %s\n', $query, $con->errno, $con->error);
     exit();
   }
   $stmt->bindParam(1, $hostname, PDO::PARAM_STR);
