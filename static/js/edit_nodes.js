@@ -131,7 +131,7 @@ function sprintf(format, etc) {
 
 function createTableRow(id, hostname, label, port) {
 	var html = "\t\t" + '<div class="tableRow">' + "\n";
-	var tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit editableCell" id="type=hostname&node_id=%s">%s</div></div>' + "\n";
+	var tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit editableCell lowercase" id="type=hostname&node_id=%s">%s</div></div>' + "\n";
 	html = html + sprintf(tableRow, id, hostname);
 	tableRow = "\t\t\t" + ' <div class="tableCell"><div class="edit editableCell" id="type=label&node_id=%s">%s</div></div>' + "\n";
 	html = html + sprintf(tableRow, id, label);

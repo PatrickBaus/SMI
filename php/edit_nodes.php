@@ -7,7 +7,7 @@ function createTableRow($id, $hostname, $label, $port) {
   $filler = "\t\t\t";
 
   $html = $filler . '<div class="tableRow">' . PHP_EOL;
-  $tableRow = $filler . "\t" . '<div class="tableCell lowercase"><div class="edit editableCell" id="type=hostname&node_id=%d">%s</div></div>' . PHP_EOL;
+  $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell lowercase" id="type=hostname&node_id=%d">%s</div></div>' . PHP_EOL;
   $html .= sprintf($tableRow, $id, $hostname);
   $tableRow = $filler . "\t" . '<div class="tableCell"><div class="edit editableCell" id="type=label&node_id=%d">%s</div></div>' . PHP_EOL;
   $html .= sprintf($tableRow, $id, $label);
