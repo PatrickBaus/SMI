@@ -4,33 +4,33 @@
 <?php
 // Functions
 function createTableRow($id, $name, $uid, $unit, $callback_period, $room, $master_node, $enabled) {
-	$filler = "\t\t\t";
+  $filler = "\t\t\t";
 
-	$html = $filler . '<div class="tableRow">' . PHP_EOL;
-	$tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=name&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $name);
-	$tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=uid&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $uid);
-	$tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_units editableCell" id="type=unit&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $unit);
-	$tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=callback_period&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $callback_period);
-	$tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_rooms editableCell" id="type=room&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $room);
-	$tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_nodes editableCell" id="type=nodes&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id, $master_node);
-	$tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_enabled editableCell %s" id="type=enabled&sensor_id=%d">%s</div></div>' . PHP_EOL;
-	if ($enabled) {
-		$html .= sprintf($tableRow, "enabled", $id, "enabled");
-	} else {
-		$html .= sprintf($tableRow, "disabled", $id, "disabled");
-	}
+  $html = $filler . '<div class="tableRow">' . PHP_EOL;
+  $tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=name&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $name);
+  $tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=uid&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $uid);
+  $tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_units editableCell" id="type=unit&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $unit);
+  $tableRow = $filler . "\t" . ' <div class="tableCell"><div class="edit editableCell" id="type=callback_period&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $callback_period);
+  $tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_rooms editableCell" id="type=room&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $room);
+  $tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_nodes editableCell" id="type=nodes&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id, $master_node);
+  $tableRow = $filler ."\t" . ' <div class="tableCell"><div class="edit_select_enabled editableCell %s" id="type=enabled&sensor_id=%d">%s</div></div>' . PHP_EOL;
+  if ($enabled) {
+    $html .= sprintf($tableRow, "enabled", $id, "enabled");
+  } else {
+    $html .= sprintf($tableRow, "disabled", $id, "disabled");
+  }
 
-	$tableRow = $filler . "\t" . ' <div class="tableCell"><button id="sensor_id=%d" class="button deleteButton">Delete</button></div>' . PHP_EOL;
-	$html .= sprintf($tableRow, $id);
-	$html .= $filler . "</div>" . PHP_EOL;
+  $tableRow = $filler . "\t" . ' <div class="tableCell"><button id="sensor_id=%d" class="button deleteButton">Delete</button></div>' . PHP_EOL;
+  $html .= sprintf($tableRow, $id);
+  $html .= $filler . "</div>" . PHP_EOL;
 
-	return $html;
+  return $html;
 }
 
 // Open the database connection
@@ -40,8 +40,8 @@ $con = openConnection();
 $result = $con->query($query_sensor["get_all"]);
 
 if (!$result) {
-	printf("Query failed: %s" . PHP_EOL, mysqli_error($con));
-	exit();
+  printf("Query failed: %s" . PHP_EOL, mysqli_error($con));
+  exit();
 }
 
 // Extract all available units from the database
@@ -73,8 +73,8 @@ echo <<<EOF
 			addJEditableSelect("edit_select_enabled", $enabled_json, updateEnabled);
 			addJEditable("edit");
 		}
-		function updateValue(result, status) {
-			return status.data[result];
+		function updateValue(result, settings) {
+			$(this).html(settings.data[result]);
 		}
 		function updateEnabled(value, settings) {
 			if (value == "enabled") {
@@ -144,7 +144,7 @@ echo <<<EOF
 EOF;
 
 foreach($result as $row) {
-	echo createTableRow($row['id'], $row['label'], $row['uid'], $units[$row['unit_id']], $row['callback_period'], $row['room'], $row['master_node'], $row['enabled']);
+  echo createTableRow($row['id'], $row['label'], $row['uid'], $units[$row['unit_id']], $row['callback_period'], $row['room'], $row['master_node'], $row['enabled']);
 }
 
 // Close the database connection
