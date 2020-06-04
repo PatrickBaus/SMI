@@ -67,9 +67,9 @@ echo <<<EOF
 	<script src="static/js/edit_sensors.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		function AddAllJEditables() {
-			addJEditableSelect("edit_select_units", $units_json, null, updateValue);
-			addJEditableSelect("edit_select_rooms", $rooms_json, null, updateValue);
-			addJEditableSelect("edit_select_nodes", $nodes_json, null, updateValue);
+			addJEditableSelect("edit_select_units", $units_json, updateValue);
+			addJEditableSelect("edit_select_rooms", $rooms_json, updateValue);
+			addJEditableSelect("edit_select_nodes", $nodes_json, updateValue);
 			addJEditableSelect("edit_select_enabled", $enabled_json, updateEnabled);
 			addJEditable("edit");
 		}

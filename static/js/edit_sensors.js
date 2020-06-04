@@ -1,11 +1,10 @@
-function addJEditableSelect(selectClass, selectData, callback_function, intercept_function) {
+function addJEditableSelect(selectClass, selectData, callback_function) {
 	$('.' + selectClass).editable('database/save_sensors.php', {
 		indicator: '<img src="img/indicator.gif">',
 		tooltip:'Click to edit...',
 		data: selectData,
 		type: "select",
 		callback: callback_function,
-		intercept: intercept_function,
 		submit: "OK",
 	});
 }
