@@ -65,7 +65,7 @@ $query_unit = array(
 $query_export = array(
 	"get_all" => "SELECT S.id, S.label, R.label AS room_name FROM sensors S, rooms R WHERE S.room_id = R.id",
 	"get_first_date" => "SELECT MIN(SD.time) as date from sensor_data SD",
-	"get_data" => 'SELECT SD.sensor_id, SD.time, SD.value, SU.unit FROM sensor_data SD, sensors S, sensor_units SU WHERE time >= ? AND time <= ? AND sensor_id IN (%s) AND S.id=SD.sensor_id AND SU.id=S.unit_id ORDER BY date',
+	"get_data" => "SELECT SD.sensor_id, SD.time, SD.value, SU.unit FROM sensor_data SD, sensors S, sensor_units SU WHERE sensor_id IN (%s) AND time >= ? AND time <= ? AND S.id=SD.sensor_id AND SU.id=S.unit_id ORDER BY time",
 	"get_sensor_info" => "SELECT S.id, S.label, R.label as room FROM sensors S, rooms R WHERE S.id IN (%s) AND S.room_id = R.id ORDER BY room",
 );
 ?>
