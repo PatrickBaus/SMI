@@ -11,7 +11,7 @@ $filter_regex_type = "/^(file_csv|text_csv)$/";
 
 function bindToArray($stmt, $query, $data) {
   foreach ($data as $index=>$value) {
-    $stmt->bindParam($index+1, $value, PDO::PARAM_INT);
+    $stmt->bindValue($index+1, $value, PDO::PARAM_INT);
   }
 }
 
